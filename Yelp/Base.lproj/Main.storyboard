@@ -137,10 +137,16 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchBar" destination="UL3-kD-mr7" id="tL7-UF-v0X"/>
                         <outlet property="tableView" destination="bhi-nf-T7w" id="nBa-gw-6oo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-4b-F1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchBar contentMode="redraw" id="UL3-kD-mr7">
+                    <rect key="frame" x="0.0" y="0.0" width="222" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textInputTraits key="textInputTraits"/>
+                </searchBar>
             </objects>
             <point key="canvasLocation" x="2727.1999999999998" y="357.57121439280365"/>
         </scene>

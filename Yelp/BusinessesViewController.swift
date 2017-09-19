@@ -8,11 +8,13 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var searchBar: UISearchBar!
     
     var businesses: [Business]!
+    var filters: [String : AnyObject]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,22 +22,14 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 120 
+        tableView.estimatedRowHeight = 120
         
-        Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
-            
-            self.businesses = businesses
-            if let businesses = businesses {
-                self.tableView.reloadData()
-                for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
-                }
-            }
-            
-            }
-        )
+        searchBar.sizeToFit()
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
         
+        searchWithTerm(searchTerm: "")
+    
         /* Example of Yelp search with more search options specified
          Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
          self.businesses = businesses
@@ -86,12 +80,42 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
-        
-        var categories = filters["categories"] as? [String]
-        Business.searchWithTerm(term: "Restaurants", sort: nil, categories: categories, deals: nil) { (businesses: [Business]!, error: Error!) -> Void in
+        self.filters = filters
+        searchWithTermAndFilters(searchTerm: "", filters: filters)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if filters == nil {
+            searchWithTerm(searchTerm: searchText)
+        } else {
+            searchWithTermAndFilters(searchTerm: searchText, filters: filters)
+        }
+    }
+    
+    func searchWithTerm(searchTerm: String) {
+        Business.searchWithTerm(term: searchTerm) { (businesses: [Business]!, error: Error!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
         }
+    }
+    
+    func searchWithTermAndFilters(searchTerm: String, filters: [String : AnyObject]) {
+        var categories = filters["categories"] as? [String]
+        Business.searchWithTerm(term: searchTerm, sort: nil, categories: categories, deals: nil) { (businesses: [Business]!, error: Error!) -> Void in
+            self.businesses = businesses
+            self.tableView.reloadData()
+        }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        searchWithTerm(searchTerm: "")
     }
     
     
