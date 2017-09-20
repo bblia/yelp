@@ -28,7 +28,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.delegate = self
         navigationItem.titleView = searchBar
         
-        searchWithTerm(searchTerm: "")
+        searchWithTermAndFilters(searchTerm: "", filters: ["categories": "" as AnyObject])
     
         /* Example of Yelp search with more search options specified
          Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
@@ -81,21 +81,14 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
         self.filters = filters
-        searchWithTermAndFilters(searchTerm: "", filters: filters)
+        searchWithTermAndFilters(searchTerm: searchBar.text ?? "", filters: filters)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if filters == nil {
-            searchWithTerm(searchTerm: searchText)
+            searchWithTermAndFilters(searchTerm: searchText, filters: ["categories" : "" as AnyObject])
         } else {
             searchWithTermAndFilters(searchTerm: searchText, filters: filters)
-        }
-    }
-    
-    func searchWithTerm(searchTerm: String) {
-        Business.searchWithTerm(term: searchTerm) { (businesses: [Business]!, error: Error!) -> Void in
-            self.businesses = businesses
-            self.tableView.reloadData()
         }
     }
     
@@ -115,7 +108,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.showsCancelButton = false
         searchBar.text = ""
         searchBar.resignFirstResponder()
-        searchWithTerm(searchTerm: "")
+        searchWithTermAndFilters(searchTerm: "", filters: filters)
     }
     
     
