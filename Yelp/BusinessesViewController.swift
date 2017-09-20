@@ -16,6 +16,11 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     var businesses: [Business]!
     var filters: [String : Any]!
     
+    var categoryToggles = [Int:Bool]()
+    var sortToggles = [Int:Bool]()
+    var dealToggles = [Int:Bool]()
+    var distanceToggles = [Int:Bool]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,14 +68,26 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         let filtersViewController = navigationController.topViewController as! FiltersViewController
         
         filtersViewController.delegate = self
+        filtersViewController.categoryToggles = self.categoryToggles
+        filtersViewController.sortToggles = self.sortToggles
+        filtersViewController.distanceToggles = self.distanceToggles
+        filtersViewController.dealToggles = self.dealToggles
      }
     
     
-    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : Any]) {
+    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : Any], categoryFilters categoryToggles: [Int:Bool],
+                               sortFilters sortToggles: [Int:Bool],
+                               distanceFilters distanceToggles: [Int:Bool],
+                               dealFilters dealToggles: [Int:Bool]) {
         let categories = filters["categories"] as? [String]
         let sort = filters["sortMode"] as? YelpSortMode
         let distance = filters["distance"] as? Int
         let deals = filters["deals"] as? Bool
+        
+        self.categoryToggles = categoryToggles;
+        self.sortToggles = sortToggles;
+        self.distanceToggles = distanceToggles;
+        self.dealToggles = dealToggles;
         
         self.filters = filters
         

@@ -9,7 +9,12 @@
 import UIKit
 
 @objc protocol FiltersViewControllerDelegate {
-    @objc func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String:Any])
+    @objc func filtersViewController(filtersViewController: FiltersViewController,
+                                     didUpdateFilters filters: [String:Any],
+        categoryFilters: [Int:Bool],
+        sortFilters: [Int:Bool],
+        distanceFilters: [Int:Bool],
+        dealFilters: [Int:Bool])
 }
 
 enum FilterSections: String {
@@ -110,7 +115,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         filters["distance"] = selectedDistance ?? nil
         filters["deals"] = selectedDeal ?? nil
         
-        delegate?.filtersViewController(filtersViewController: self, didUpdateFilters: filters)
+        delegate?.filtersViewController(filtersViewController: self, didUpdateFilters: filters, categoryFilters: categoryToggles, sortFilters: sortToggles, distanceFilters: distanceToggles, dealFilters: dealToggles)
         
         
     }
@@ -173,15 +178,25 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func switchCell(switchCell: SwitchCell, didChangeValue value: Bool) {
         let indexPath = tableView.indexPath(for: switchCell)!
-        print(indexPath)
         switch indexPath.section {
         case 0:
             dealToggles[indexPath.row] = value
-            print("deal toggle")
         case 1:
             distanceToggles[indexPath.row] = value
+            for path in 0...5 {
+                if (path != indexPath.row) {
+                    distanceToggles[path] = false
+                }
+            }
+            tableView.reloadData()
         case 2:
             sortToggles[indexPath.row] = value
+            for path in 0...2 {
+                if (path != indexPath.row) {
+                    sortToggles[path] = false
+                }
+            }
+            tableView.reloadData()
         case 3:
             categoryToggles[indexPath.row] = value
         default:
