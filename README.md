@@ -2,7 +2,7 @@
 
 **Yelp** is a Yelp search app using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **4** hours spent in total
+Time spent: **10** hours spent in total
 
 ## User Stories
 
@@ -36,7 +36,8 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
+1. Cleanest way to organize data to keep track of filters between View
+   Controllers, and the on/off state.
 2.
 
 ## Video Walkthrough
