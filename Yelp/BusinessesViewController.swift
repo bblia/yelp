@@ -16,6 +16,16 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     var businesses: [Business]!
     var filters: [String : AnyObject]!
     
+    var switchStates: [Int:Bool]!
+    var searchCategories: [String]!
+    var searchDeals: Bool!
+    var sortMode: YelpSortMode!
+    var distanceAuto: Bool!
+    var distancePoint3: Bool!
+    var distance1: Bool!
+    var distance3: Bool!
+    var distance5: Bool!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,24 +38,16 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.delegate = self
         navigationItem.titleView = searchBar
         
-        searchWithTermAndFilters(searchTerm: "", filters: ["categories": "" as AnyObject])
-    
-        /* Example of Yelp search with more search options specified
-         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-         self.businesses = businesses
-         
-         for business in businesses {
-         print(business.name!)
-         print(business.address!)
-         }
-         }
-         */
+        switchStates = [Int:Bool]()
+        searchDeals = false
+        sortMode = YelpSortMode.bestMatched
+        distanceAuto = true
+        distancePoint3 = false
+        distance1 = false
+        distance3 = false
+        distance5 = false
         
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        searchWithTermAndFilters(searchTerm: "", filters: ["categories": "" as AnyObject])
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -76,11 +78,35 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         let filtersViewController = navigationController.topViewController as! FiltersViewController
         
         filtersViewController.delegate = self
+        filtersViewController.switchStates = switchStates
+        filtersViewController.searchDeals = searchDeals
+        filtersViewController.sortMode = sortMode
+        filtersViewController.distanceAuto = distanceAuto
+        filtersViewController.distancePoint3 = distancePoint3
+        filtersViewController.distance1 = distance1
+        filtersViewController.distance3 = distance3
+        filtersViewController.distance5 = distance5
      }
     
     
-    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
+    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject],
+                               deals: Bool,
+                               switchStates: [Int:Bool],
+                               sortMode: YelpSortMode,
+                               distanceAuto: Bool,
+                               distancePoint3: Bool,
+                               distance1: Bool,
+                               distance3: Bool,
+                               distance5: Bool) {
         self.filters = filters
+        self.switchStates = switchStates
+        searchDeals = deals
+        self.sortMode = sortMode
+        self.distanceAuto = distanceAuto
+        self.distancePoint3 = distancePoint3
+        self.distance1 = distance1
+        self.distance3 = distance3
+        self.distance5 = distance5
         searchWithTermAndFilters(searchTerm: searchBar.text ?? "", filters: filters)
     }
     
@@ -93,11 +119,31 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func searchWithTermAndFilters(searchTerm: String, filters: [String : AnyObject]) {
-        var categories = filters["categories"] as? [String]
-        Business.searchWithTerm(term: searchTerm, sort: nil, categories: categories, deals: nil) { (businesses: [Business]!, error: Error!) -> Void in
+        let categories = filters["categories"] as? [String]
+        let distance = getDistance()
+        Business.searchWithTerm(term: searchTerm, sort: sortMode, categories: categories, deals: searchDeals, distance: distance) { (businesses: [Business]!, error: Error!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
         }
+    }
+    
+    func getDistance() -> Int? {
+        var distance: Int?
+        
+        if (distance5 == true){
+            distance = 8050
+        } else if (distance3 == true){
+            distance = 1610
+        } else if (distance1 == true){
+            distance = 1200
+        } else if (distancePoint3 == true){
+            distance = 400
+        } else if (distanceAuto == true){
+            distance = 0
+        } else{
+            distance = nil
+        }
+        return distance
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -110,8 +156,4 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.resignFirstResponder()
         searchWithTermAndFilters(searchTerm: "", filters: filters)
     }
-    
-    
-    
-    
 }
