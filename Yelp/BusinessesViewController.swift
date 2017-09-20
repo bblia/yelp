@@ -14,17 +14,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet var searchBar: UISearchBar!
     
     var businesses: [Business]!
-    var filters: [String : AnyObject]!
-    
-    var switchStates: [Int:Bool]!
-    var searchCategories: [String]!
-    var searchDeals: Bool!
-    var sortMode: YelpSortMode!
-    var distanceAuto: Bool!
-    var distancePoint3: Bool!
-    var distance1: Bool!
-    var distance3: Bool!
-    var distance5: Bool!
+    var filters: [String : Any]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,16 +28,11 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.delegate = self
         navigationItem.titleView = searchBar
         
-        switchStates = [Int:Bool]()
-        searchDeals = false
-        sortMode = YelpSortMode.bestMatched
-        distanceAuto = true
-        distancePoint3 = false
-        distance1 = false
-        distance3 = false
-        distance5 = false
         
-        searchWithTermAndFilters(searchTerm: "", filters: ["categories": "" as AnyObject])
+        Business.searchWithTerm(term: "Restaurants") { (businesses: [Business]?, error: Error?) in
+            self.businesses = businesses
+            self.tableView.reloadData()
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,72 +63,33 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         let filtersViewController = navigationController.topViewController as! FiltersViewController
         
         filtersViewController.delegate = self
-        filtersViewController.switchStates = switchStates
-        filtersViewController.searchDeals = searchDeals
-        filtersViewController.sortMode = sortMode
-        filtersViewController.distanceAuto = distanceAuto
-        filtersViewController.distancePoint3 = distancePoint3
-        filtersViewController.distance1 = distance1
-        filtersViewController.distance3 = distance3
-        filtersViewController.distance5 = distance5
      }
     
     
-    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject],
-                               deals: Bool,
-                               switchStates: [Int:Bool],
-                               sortMode: YelpSortMode,
-                               distanceAuto: Bool,
-                               distancePoint3: Bool,
-                               distance1: Bool,
-                               distance3: Bool,
-                               distance5: Bool) {
-        self.filters = filters
-        self.switchStates = switchStates
-        searchDeals = deals
-        self.sortMode = sortMode
-        self.distanceAuto = distanceAuto
-        self.distancePoint3 = distancePoint3
-        self.distance1 = distance1
-        self.distance3 = distance3
-        self.distance5 = distance5
-        searchWithTermAndFilters(searchTerm: searchBar.text ?? "", filters: filters)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if filters == nil {
-            searchWithTermAndFilters(searchTerm: searchText, filters: ["categories" : "" as AnyObject])
-        } else {
-            searchWithTermAndFilters(searchTerm: searchText, filters: filters)
-        }
-    }
-    
-    func searchWithTermAndFilters(searchTerm: String, filters: [String : AnyObject]) {
+    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : Any]) {
         let categories = filters["categories"] as? [String]
-        let distance = getDistance()
-        Business.searchWithTerm(term: searchTerm, sort: sortMode, categories: categories, deals: searchDeals, distance: distance) { (businesses: [Business]!, error: Error!) -> Void in
+        let sort = filters["sortMode"] as? YelpSortMode
+        let distance = filters["distance"] as? Int
+        let deals = filters["deals"] as? Bool
+        
+        self.filters = filters
+        
+        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
             self.businesses = businesses
             self.tableView.reloadData()
         }
     }
     
-    func getDistance() -> Int? {
-        var distance: Int?
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let categories = filters["categories"] as? [String]
+        let sort = filters["sortMode"] as? YelpSortMode
+        let distance = filters["distance"] as? Int
+        let deals = filters["deals"] as? Bool
         
-        if (distance5 == true){
-            distance = 8050
-        } else if (distance3 == true){
-            distance = 1610
-        } else if (distance1 == true){
-            distance = 1200
-        } else if (distancePoint3 == true){
-            distance = 400
-        } else if (distanceAuto == true){
-            distance = 0
-        } else{
-            distance = nil
+        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
+            self.businesses = businesses
+            self.tableView.reloadData()
         }
-        return distance
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -154,6 +100,15 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.showsCancelButton = false
         searchBar.text = ""
         searchBar.resignFirstResponder()
-        searchWithTermAndFilters(searchTerm: "", filters: filters)
+        
+        let categories = filters["categories"] as? [String]
+        let sort = filters["sortMode"] as? YelpSortMode
+        let distance = filters["distance"] as? Int
+        let deals = filters["deals"] as? Bool
+        
+        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
+            self.businesses = businesses
+            self.tableView.reloadData()
+        }
     }
 }
