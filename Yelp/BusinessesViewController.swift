@@ -70,15 +70,29 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
      // Pass the selected object to the new view controller.
         
         let navigationController = segue.destination as! UINavigationController
+        if let barButton = sender as? UIBarButtonItem {
+            if barButton.title == "Filters" {
+                //Do what you want
+   
+                let filtersViewController = navigationController.topViewController as! FiltersViewController
         
-        let filtersViewController = navigationController.topViewController as! FiltersViewController
+                filtersViewController.delegate = self
+                filtersViewController.categoryToggles = self.categoryToggles
+                filtersViewController.sortToggles = self.sortToggles
+                filtersViewController.distanceToggles = self.distanceToggles
+                filtersViewController.dealToggles = self.dealToggles
+            } else {
+                let mapViewController = navigationController.topViewController as! MapViewController
+                
+                mapViewController.businesses = self.businesses
+            }
+        }
+    }
+    
+    
+    @IBAction func onMapSelected(_ sender: Any) {
         
-        filtersViewController.delegate = self
-        filtersViewController.categoryToggles = self.categoryToggles
-        filtersViewController.sortToggles = self.sortToggles
-        filtersViewController.distanceToggles = self.distanceToggles
-        filtersViewController.dealToggles = self.dealToggles
-     }
+    }
     
     
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : Any], categoryFilters categoryToggles: [Int:Bool],

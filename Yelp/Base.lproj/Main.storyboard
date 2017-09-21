@@ -77,8 +77,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thai, Seafood, Salad" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pI-lA-LYT">
-                                                    <rect key="frame" x="89" y="82" width="270" height="14"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Thai, Seafood, Salad" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pI-lA-LYT">
+                                                    <rect key="frame" x="89" y="78" width="270" height="14"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -133,6 +133,11 @@
                         <barButtonItem key="leftBarButtonItem" title="Filters" id="G44-BM-PSP">
                             <connections>
                                 <segue destination="JVI-VG-HYf" kind="presentation" id="KpP-g7-zhP"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="uVG-sx-Wl6">
+                            <connections>
+                                <segue destination="f9l-LI-o0E" kind="presentation" id="hUQ-2W-KVZ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -244,6 +249,45 @@
             </objects>
             <point key="canvasLocation" x="1788" y="357.57121439280365"/>
         </scene>
+        <!--Map View Controller-->
+        <scene sceneID="1QM-Zw-fvH">
+            <objects>
+                <viewController id="f2F-fN-xmi" customClass="MapViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AjI-Oq-8Mn"/>
+                        <viewControllerLayoutGuide type="bottom" id="RNl-5M-O9T"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ykz-n3-je0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Byx-ds-VCP">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="RNl-5M-O9T" firstAttribute="top" secondItem="Byx-ds-VCP" secondAttribute="bottom" id="4eO-HE-pVZ"/>
+                            <constraint firstItem="Byx-ds-VCP" firstAttribute="leading" secondItem="Ykz-n3-je0" secondAttribute="leading" id="iE7-xd-h3C"/>
+                            <constraint firstItem="Byx-ds-VCP" firstAttribute="top" secondItem="AjI-Oq-8Mn" secondAttribute="bottom" id="rpi-NM-weV"/>
+                            <constraint firstAttribute="trailing" secondItem="Byx-ds-VCP" secondAttribute="trailing" id="udu-gI-oL1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="u1s-j5-bwD">
+                        <barButtonItem key="rightBarButtonItem" title="List" id="5eF-XJ-xOr">
+                            <connections>
+                                <action selector="onListSelected:" destination="f2F-fN-xmi" id="ozW-r4-h2G"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mapView" destination="Byx-ds-VCP" id="UjL-Ms-blO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yqx-xb-yoa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4389.6000000000004" y="-301.79910044977515"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="ps7-Qn-4QV">
             <objects>
@@ -261,6 +305,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hyG-HK-qC5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3448.8000000000002" y="352.17391304347831"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="exN-Bh-bWP">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="f9l-LI-o0E" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PSO-bi-U1j">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="f2F-fN-xmi" kind="relationship" relationship="rootViewController" id="x1Y-fC-1PX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WjT-Gd-c7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3450.4000000000001" y="-301.79910044977515"/>
         </scene>
     </scenes>
 </document>
