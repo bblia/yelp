@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UISearchBarDelegate {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UISearchBarDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var searchBar: UISearchBar!
@@ -21,6 +21,11 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     var dealToggles = [Int:Bool]()
     var distanceToggles = [Int:Bool]()
     
+    var limit = 0
+    var offset = 0
+
+    var isMoreDataLoading = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,9 +39,10 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         navigationItem.titleView = searchBar
         
         
-        Business.searchWithTerm(term: "Restaurants") { (businesses: [Business]?, error: Error?) in
+        Business.searchWithTerm(term: "Restaurants", limit: limit, offset: offset) { (businesses: [Business]?, error: Error?) in
             self.businesses = businesses
             self.tableView.reloadData()
+            self.offset = businesses?.count ?? 0
         }
     }
     
@@ -91,22 +97,17 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         self.filters = filters
         
-        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
+        offset = 0
+        
+        Business.searchWithTerm(term: "Restaurants " + self.searchBar.text!, limit: limit, offset: offset, sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
             self.businesses = businesses
             self.tableView.reloadData()
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let categories = filters["categories"] as? [String]
-        let sort = filters["sortMode"] as? YelpSortMode
-        let distance = filters["distance"] as? Int
-        let deals = filters["deals"] as? Bool
-        
-        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
-            self.businesses = businesses
-            self.tableView.reloadData()
-        }
+        offset = 0
+        loadData(searchText: searchText)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -117,15 +118,77 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.showsCancelButton = false
         searchBar.text = ""
         searchBar.resignFirstResponder()
-        
-        let categories = filters["categories"] as? [String]
-        let sort = filters["sortMode"] as? YelpSortMode
-        let distance = filters["distance"] as? Int
-        let deals = filters["deals"] as? Bool
-        
-        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
-            self.businesses = businesses
-            self.tableView.reloadData()
+        offset = 0
+        loadData(searchText: searchBar.text!)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            print(scrollOffsetThreshold)
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
+                isMoreDataLoading = true
+                
+                // ... Code to load more results ...
+                loadMoreData(searchText: searchBar.text!)
+            }
         }
+    }
+    
+    func loadData(searchText: String) {
+        if filters != nil {
+            let categories = filters["categories"] as? [String] ?? nil
+            let sort = filters["sortMode"] as? YelpSortMode ?? nil
+            let distance = filters["distance"] as? Int ?? nil
+            let deals = filters["deals"] as? Bool ?? nil
+            
+            Business.searchWithTerm(term: "Restaurants " + searchText, limit: limit, offset: self.offset, sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
+                self.businesses = businesses
+                self.offset = (businesses?.count)!
+                self.tableView.reloadData()
+                self.isMoreDataLoading = false
+            }
+        } else {
+            Business.searchWithTerm(term: "Restaurants " + searchText, limit: limit , offset: self.offset, completion: { (businesses: [Business]?, error: Error?) in
+                self.businesses = businesses
+                self.offset = (businesses?.count)!
+                self.tableView.reloadData()
+                self.isMoreDataLoading = false
+
+            })
+        }
+        
+
+    }
+    
+    func loadMoreData(searchText: String) {
+        if filters != nil {
+            let categories = filters["categories"] as? [String] ?? nil
+            let sort = filters["sortMode"] as? YelpSortMode ?? nil
+            let distance = filters["distance"] as? Int ?? nil
+            let deals = filters["deals"] as? Bool ?? nil
+            
+            Business.searchWithTerm(term: "Restaurants " + searchText, limit: limit, offset: self.offset, sort: sort, categories: categories, deals: deals, distance: distance) { (businesses: [Business]?, error: Error?) in
+                for business in businesses! {
+                    self.businesses.append(business)
+                }
+                self.offset = (self.businesses?.count)!
+                self.tableView.reloadData()
+                self.isMoreDataLoading = false
+            }
+        } else {
+            Business.searchWithTerm(term: "Restaurants " + searchText, limit: limit , offset: self.offset, completion: { (businesses: [Business]?, error: Error?) in
+                for business in businesses! {
+                    self.businesses.append(business)
+                }
+                self.offset = (self.businesses?.count)!
+                self.tableView.reloadData()
+                self.isMoreDataLoading = false
+            })
+        }
+
     }
 }
