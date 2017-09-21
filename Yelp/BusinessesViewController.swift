@@ -36,6 +36,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         searchBar.sizeToFit()
         searchBar.delegate = self
+        
         navigationItem.titleView = searchBar
         
         
@@ -119,9 +120,10 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         offset = 0
-        loadData(searchText: searchText)
+        searchBar.resignFirstResponder()
+        loadData(searchText: self.searchBar.text!)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -138,15 +140,10 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (!isMoreDataLoading) {
-            // Calculate the position of one screen length before the bottom of the results
             let scrollViewContentHeight = tableView.contentSize.height
             let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
-            print(scrollOffsetThreshold)
-            // When the user has scrolled past the threshold, start requesting
             if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
                 isMoreDataLoading = true
-                
-                // ... Code to load more results ...
                 loadMoreData(searchText: searchBar.text!)
             }
         }

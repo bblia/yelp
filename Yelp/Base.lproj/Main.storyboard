@@ -77,8 +77,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Thai, Seafood, Salad" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pI-lA-LYT">
-                                                    <rect key="frame" x="89" y="78" width="270" height="14"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thai, Seafood, Salad" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pI-lA-LYT">
+                                                    <rect key="frame" x="89" y="77" width="270" height="14"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -104,7 +104,7 @@
                                                 <constraint firstItem="b1g-hn-8pM" firstAttribute="top" secondItem="77g-Nb-oLc" secondAttribute="bottom" constant="4" id="dAA-2u-hOi"/>
                                                 <constraint firstItem="vOj-UC-V2A" firstAttribute="centerY" secondItem="77g-Nb-oLc" secondAttribute="centerY" id="nkT-ML-uJ5"/>
                                                 <constraint firstItem="b1g-hn-8pM" firstAttribute="leading" secondItem="77g-Nb-oLc" secondAttribute="leading" id="qLG-M5-hHK"/>
-                                                <constraint firstItem="6pI-lA-LYT" firstAttribute="top" secondItem="b1g-hn-8pM" secondAttribute="bottom" constant="8" id="urh-I1-CF1"/>
+                                                <constraint firstItem="6pI-lA-LYT" firstAttribute="top" secondItem="b1g-hn-8pM" secondAttribute="bottom" constant="3" id="urh-I1-CF1"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="b1g-hn-8pM" secondAttribute="trailing" constant="8" id="vtU-dQ-xgH"/>
                                                 <constraint firstItem="rBJ-XY-NUH" firstAttribute="top" secondItem="J1a-yq-aDu" secondAttribute="topMargin" constant="8" id="yOy-Cl-1U2"/>
                                             </constraints>
@@ -150,9 +150,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-4b-F1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchBar contentMode="redraw" id="UL3-kD-mr7">
+                <searchBar contentMode="redraw" placeholder="Find Restaurants" id="UL3-kD-mr7">
                     <rect key="frame" x="0.0" y="0.0" width="222" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="barTintColor" red="0.77752560380000002" green="0.050346337259999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <textInputTraits key="textInputTraits"/>
                 </searchBar>
             </objects>

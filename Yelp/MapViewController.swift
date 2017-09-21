@@ -27,11 +27,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        locationManager.distanceFilter = 200
+        locationManager.distanceFilter = 100
         locationManager.requestWhenInUseAuthorization()
         
         for business in businesses {
-            addAnnotationAtAddress(address: business.address!, title: business.name!)
+            addAnnotationAtAddress(address: business.displayAddress!, title: business.name!)
         }
         
         
@@ -61,15 +61,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    // add an Annotation with a coordinate: CLLocationCoordinate2D
-    func addAnnotationAtCoordinate(coordinate: CLLocationCoordinate2D) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        annotation.title = "An annotation!"
-        mapView.addAnnotation(annotation)
-    }
-    
-    // add an annotation with an address: String
     func addAnnotationAtAddress(address: String, title: String) {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) { (placemarks, error) in
