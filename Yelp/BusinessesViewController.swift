@@ -67,19 +67,15 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-        
         let navigationController = segue.destination as! UINavigationController
         if let barButton = sender as? UIBarButtonItem {
             if barButton.title == "Filters" {
-                //Do what you want
-   
                 let filtersViewController = navigationController.topViewController as! FiltersViewController
         
                 filtersViewController.delegate = self
                 filtersViewController.categoryToggles = self.categoryToggles
                 filtersViewController.sortToggles = self.sortToggles
+                checkDistanceToggles()
                 filtersViewController.distanceToggles = self.distanceToggles
                 filtersViewController.dealToggles = self.dealToggles
             } else {
@@ -90,6 +86,17 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    func checkDistanceToggles() {
+        var noneOn = true
+        for row in 0...4 {
+            if distanceToggles[row] == true {
+                noneOn=false
+            }
+        }
+        if (noneOn) {
+            distanceToggles[0] = true
+        }
+    }
     
     @IBAction func onMapSelected(_ sender: Any) {
         

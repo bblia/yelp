@@ -44,6 +44,10 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     
     var delegate: FiltersViewControllerDelegate?
     
+    var categoriesExpanded = false
+    var distancesExpanded = false
+    var selectedDistance = "Auto"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -60,6 +64,12 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         
         Filter.createDistanceFilters { (filters: [Filter]?, error: Error?) in
             self.distanceFilters = filters
+        }
+        
+        for (row, isOn) in distanceToggles {
+            if isOn {
+                selectedDistance = (distanceFilters[row].name)!
+            }
         }
         
         Filter.createDealFilters { (filters: [Filter]?, error: Error?) in
@@ -98,6 +108,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         for (row, isOn) in distanceToggles {
             if isOn {
                 selectedDistance = distanceFilters[row].value as? NSNumber
+                self.selectedDistance = (distanceFilters[row].name)!
             }
         }
         
@@ -125,11 +136,19 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         case 0:
             return dealFilters.count
         case 1:
-            return distanceFilters.count
+            if distancesExpanded {
+                return distanceFilters.count
+            } else {
+                return 1;
+            }
         case 2:
             return sortModes.count
         case 3:
-            return categoryFilters.count
+            if categoriesExpanded {
+                return categoryFilters.count
+            } else {
+                return 5;
+            }
         default:
             return 0
         }
@@ -152,20 +171,54 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             cell.nameLabel.text = dealFilters[indexPath.row].name
             cell.onSwitch.isOn = dealToggles[indexPath.row] ?? false
         case 1:
-            cell.nameLabel.text = distanceFilters?[indexPath.row].name
-            cell.onSwitch.isOn = distanceToggles[indexPath.row] ?? false
+            if (distancesExpanded) {
+                cell.nameLabel.text = distanceFilters?[indexPath.row].name
+                cell.onSwitch.isOn = distanceToggles[indexPath.row] ?? false
+                cell.onSwitch.isHidden = false
+            } else {
+                //if (indexPath.row == 1) {
+                    cell.nameLabel.text = selectedDistance
+                    cell.onSwitch.isHidden = true
+                    cell.onSwitch.isOn = false
+               // }
+            }
         case 2:
             cell.nameLabel.text = sortModes[indexPath.row].name
             cell.onSwitch.isOn = sortToggles[indexPath.row] ?? false
         case 3:
-            cell.nameLabel.text = categoryFilters[indexPath.row].name
-            cell.onSwitch.isOn = categoryToggles[indexPath.row] ?? false
+            if (categoriesExpanded) {
+                cell.nameLabel.text = categoryFilters[indexPath.row].name
+                cell.onSwitch.isOn = categoryToggles[indexPath.row] ?? false
+                cell.onSwitch.isHidden = false;
+            } else {
+                if (indexPath.row == 4) {
+                    cell.nameLabel.text = "See All"
+                    cell.onSwitch.isHidden = true;
+                    cell.onSwitch.isOn = false;
+                } else {
+                    cell.nameLabel.text = categoryFilters[indexPath.row].name
+                    cell.onSwitch.isOn = categoryToggles[indexPath.row] ?? false
+
+                }
+            }
         default:
             break
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 3 && indexPath.row == 4 {
+            categoriesExpanded = true
+            tableView.reloadSections(IndexSet(integer: 3), with: .fade)
         }
+        if indexPath.section == 1 && indexPath.row == 0 {
+            distancesExpanded = true
+            tableView.reloadSections(IndexSet(integer: 1), with: .fade)
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -183,11 +236,13 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             dealToggles[indexPath.row] = value
         case 1:
             distanceToggles[indexPath.row] = value
+            selectedDistance = distanceFilters[indexPath.row].name!
             for path in 0...5 {
                 if (path != indexPath.row) {
                     distanceToggles[path] = false
                 }
             }
+            distancesExpanded = false
             tableView.reloadData()
         case 2:
             sortToggles[indexPath.row] = value
