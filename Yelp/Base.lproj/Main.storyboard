@@ -59,8 +59,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="68 Divison St. Mission Bay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1g-hn-8pM">
-                                                    <rect key="frame" x="89" y="58" width="161" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="68 Divison St. Mission Bay" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1g-hn-8pM">
+                                                    <rect key="frame" x="89" y="58" width="270" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -105,6 +105,7 @@
                                                 <constraint firstItem="vOj-UC-V2A" firstAttribute="centerY" secondItem="77g-Nb-oLc" secondAttribute="centerY" id="nkT-ML-uJ5"/>
                                                 <constraint firstItem="b1g-hn-8pM" firstAttribute="leading" secondItem="77g-Nb-oLc" secondAttribute="leading" id="qLG-M5-hHK"/>
                                                 <constraint firstItem="6pI-lA-LYT" firstAttribute="top" secondItem="b1g-hn-8pM" secondAttribute="bottom" constant="8" id="urh-I1-CF1"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="b1g-hn-8pM" secondAttribute="trailing" constant="8" id="vtU-dQ-xgH"/>
                                                 <constraint firstItem="rBJ-XY-NUH" firstAttribute="top" secondItem="J1a-yq-aDu" secondAttribute="topMargin" constant="8" id="yOy-Cl-1U2"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -131,11 +132,13 @@
                     </view>
                     <navigationItem key="navigationItem" title="Yelp" id="io6-Es-s6a">
                         <barButtonItem key="leftBarButtonItem" title="Filters" id="G44-BM-PSP">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <segue destination="JVI-VG-HYf" kind="presentation" id="KpP-g7-zhP"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Map" id="uVG-sx-Wl6">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <segue destination="f9l-LI-o0E" kind="presentation" id="hUQ-2W-KVZ"/>
                             </connections>
@@ -213,11 +216,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="TOE-Af-xz5">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="Bi7-PK-BA3">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="onCancelButton:" destination="k4o-iu-If2" id="El2-Vj-Bah"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Search" id="lEG-bf-C5U">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="onSearchButton:" destination="k4o-iu-If2" id="EEm-Mn-Wlw"/>
                             </connections>
@@ -236,9 +241,10 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HlC-PE-YwV" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7WM-7r-EAa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="7WM-7r-EAa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.77752560377120972" green="0.050346337258815765" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -275,6 +281,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="u1s-j5-bwD">
                         <barButtonItem key="rightBarButtonItem" title="List" id="5eF-XJ-xOr">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="onListSelected:" destination="f2F-fN-xmi" id="ozW-r4-h2G"/>
                             </connections>
@@ -293,9 +300,10 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JVI-VG-HYf" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="QPi-ft-X9G">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="QPi-ft-X9G">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.77752560377120972" green="0.050346337258815765" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -311,9 +319,10 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="f9l-LI-o0E" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PSO-bi-U1j">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PSO-bi-U1j">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.77752560377120972" green="0.050346337258815765" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

@@ -61,25 +61,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "customAnnotationView"
-        // custom pin annotation
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
-        if (annotationView == nil) {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-        }
-        else {
-            annotationView!.annotation = annotation
-        }
-        if #available(iOS 9.0, *) {
-            annotationView!.pinTintColor = UIColor.green
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        return annotationView
-    }
-    
     // add an Annotation with a coordinate: CLLocationCoordinate2D
     func addAnnotationAtCoordinate(coordinate: CLLocationCoordinate2D) {
         let annotation = MKPointAnnotation()

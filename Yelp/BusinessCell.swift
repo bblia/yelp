@@ -23,7 +23,7 @@ class BusinessCell: UITableViewCell {
     @IBOutlet weak var addressLabel: UILabel!
     
     @IBOutlet weak var categoriesLabel: UILabel!
-    
+        
     var business: Business! {
         didSet {
             nameLabel.text = business.name
