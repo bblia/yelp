@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class MapViewController: UIViewController, CLLocationManagerDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
      var locationManager : CLLocationManager!
@@ -19,6 +19,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        mapView.delegate = self
+
         // set the region to display, this also sets a correct zoom level
         // set starting center location in San Francisco
         let centerLocation = CLLocation(latitude: 37.7833, longitude: -122.4167)
@@ -31,10 +33,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         
         for business in businesses {
-            addAnnotationAtAddress(address: business.displayAddress!, title: business.name!)
+            addAnnotationAtAddress(address: business.displayAddress!, business: business)
         }
-        
-        
     }
     
     func goToLocation(location: CLLocation) {
@@ -61,29 +61,47 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    func addAnnotationAtAddress(address: String, title: String) {
+    func addAnnotationAtAddress(address: String, business: Business) {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) { (placemarks, error) in
             if let placemarks = placemarks {
                 if placemarks.count != 0 {
                     let coordinate = placemarks.first!.location!
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = coordinate.coordinate
-                    annotation.title = title
+                    let annotation = Annotation(coordinate: coordinate.coordinate)
+                    annotation.business = business
                     self.mapView.addAnnotation(annotation)
                 }
             }
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        var view = mapView.dequeueReusableAnnotationView(withIdentifier: "MapAnnotationView")
+        view = MapAnnotationView(annotation: annotation, reuseIdentifier: "MapAnnotationView")
+        view?.canShowCallout = false
+        
+        return view
+    
     }
-    */
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if view is MapAnnotationView {
+            let views = Bundle.main.loadNibNamed("AnnotationView", owner: nil, options: nil)
+            let annotationView = views?[0] as! AnnotationView
+            annotationView.center = CGPoint(x: view.bounds.size.width, y: -annotationView.bounds.size.height)
+            
+            let annotation = view.annotation as! Annotation
+            annotationView.business = annotation.business
+
+            view.addSubview(annotationView)
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        for view in view.subviews {
+            view.removeFromSuperview()
+        }
+        
+    }
 
 }

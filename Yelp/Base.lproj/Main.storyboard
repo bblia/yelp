@@ -243,7 +243,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HlC-PE-YwV" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="7WM-7r-EAa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7WM-7r-EAa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.77752560377120972" green="0.050346337258815765" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -302,7 +302,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JVI-VG-HYf" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="QPi-ft-X9G">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="QPi-ft-X9G">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.77752560377120972" green="0.050346337258815765" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -321,7 +321,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="f9l-LI-o0E" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PSO-bi-U1j">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PSO-bi-U1j">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.77752560377120972" green="0.050346337258815765" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

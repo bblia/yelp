@@ -147,7 +147,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             if categoriesExpanded {
                 return categoryFilters.count
             } else {
-                return 5;
+                return 4;
             }
         default:
             return 0
@@ -191,7 +191,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.onSwitch.isOn = categoryToggles[indexPath.row] ?? false
                 cell.onSwitch.isHidden = false;
             } else {
-                if (indexPath.row == 4) {
+                if (indexPath.row == 3) {
                     cell.nameLabel.text = "See All"
                     cell.onSwitch.isHidden = true;
                     cell.onSwitch.isOn = false;
@@ -209,7 +209,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 3 && indexPath.row == 4 {
+        if indexPath.section == 3 && indexPath.row == 3 {
             categoriesExpanded = true
             tableView.reloadSections(IndexSet(integer: 3), with: .fade)
         }
@@ -243,7 +243,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
             }
             distancesExpanded = false
-            tableView.reloadData()
+            tableView.reloadSections(IndexSet(integer: 1), with: .fade)
         case 2:
             sortToggles[indexPath.row] = value
             for path in 0...2 {
@@ -251,7 +251,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
                     sortToggles[path] = false
                 }
             }
-            tableView.reloadData()
+            tableView.reloadSections(IndexSet(integer: 3), with: .fade)
         case 3:
             categoryToggles[indexPath.row] = value
         default:

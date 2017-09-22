@@ -2,7 +2,7 @@
 
 **Yelp** is a Yelp search app using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **13** hours spent in total
+Time spent: **16** hours spent in total
 
 ## User Stories
 
@@ -31,19 +31,21 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] Custom map annotations showing the business details
+- [x] Style splash screen, add yelp app icons, and theme with red/white
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
 1. Cleanest way to organize data to keep track of filters between View
    Controllers, and the on/off state.
-2.
+2. How to use different view cells in the table view for switches vs
+   checkboxes
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://user-images.githubusercontent.com/4870878/30731093-23f099e0-9f20-11e7-87bf-db539a2c0b72.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

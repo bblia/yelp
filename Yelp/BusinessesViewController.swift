@@ -98,11 +98,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    @IBAction func onMapSelected(_ sender: Any) {
-        
-    }
-    
-    
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : Any], categoryFilters categoryToggles: [Int:Bool],
                                sortFilters sortToggles: [Int:Bool],
                                distanceFilters distanceToggles: [Int:Bool],
